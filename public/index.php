@@ -2,8 +2,12 @@
 
 require '../vendor/autoload.php';
 
-use App\Controller;
-use App\Controller\TopController;
+use eftec\bladeone\BladeOne;
+
+$views = __DIR__ . '/../Views/src';
+$cache = __DIR__ . '/../Views/cache';
+
+$blade = new BladeOne($views, $cache, BladeOne::MODE_AUTO);
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/', 'Top');
@@ -33,10 +37,11 @@ switch ($routeInfo[0]) {
         $handler = $routeInfo[1];
         $args = $routeInfo[2];
 
+        $prefix = '\\App\\Controller\\';
         $suffix = 'Controller';
-        $controllerName = $handler . $suffix;
+        $controllerName = $prefix . $handler . $suffix;
 
-        $c = new $controllerNam();
-        $c->index($args);
+        $c = new $controllerName();
+        $c->index($blade, $args);
         break;
 }

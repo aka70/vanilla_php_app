@@ -4,8 +4,13 @@ namespace App\Controller;
 
 class TopController
 {
-    public function index()
+    public function index($blade)
     {
-        echo json_encode(["status" => 'OK']);
+        $variables = [
+            "variable1" => "Hello",
+            "variable2" => "World",
+        ];
+
+        echo $blade->run("Top", $variables);
     }
 }
