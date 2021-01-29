@@ -1,6 +1,7 @@
 <?php
 
 require '../vendor/autoload.php';
+require 'db_config.php';
 
 use eftec\bladeone\BladeOne;
 
