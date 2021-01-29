@@ -3,15 +3,9 @@
 require '../vendor/autoload.php';
 require 'db_config.php';
 
-use eftec\bladeone\BladeOne;
-
-$views = __DIR__ . '/../Views/src';
-$cache = __DIR__ . '/../Views/cache';
-
-$blade = new BladeOne($views, $cache, BladeOne::MODE_AUTO);
-
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
-    $r->addRoute('GET', '/', 'Top');
+    $r->addRoute('GET', '/', 'Top@index');
+    $r->addRoute('GET', '/registration/top', 'Registration@top');
     $r->addRoute('GET', '/users', 'get_all_users_handler');
     $r->addRoute('GET', '/user/{id:\d+}', 'get_user_handler');
     $r->addRoute('GET', '/articles/{id:\d+}[/{title}]', 'get_article_handler');
@@ -36,13 +30,13 @@ switch ($routeInfo[0]) {
         break;
     case FastRoute\Dispatcher::FOUND:
         $handler = $routeInfo[1];
-        $args = $routeInfo[2];
-
+        $targets = explode('@', $handler);
         $prefix = '\\App\\Controller\\';
         $suffix = 'Controller';
-        $controllerName = $prefix . $handler . $suffix;
+        $controllerName = $prefix . $targets[0] . $suffix;
+        $args = $routeInfo[2];
 
-        $c = new $controllerName();
-        $c->index($blade, $args);
+        $class_instance = new $controllerName();
+        echo call_user_func_array([$class_instance, $targets[1]], $args);
         break;
 }
