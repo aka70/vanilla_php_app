@@ -3,17 +3,26 @@
 namespace App\Controller;
 
 use eftec\bladeone\BladeOne;
+use App\Libs\RegistrationValidator;
 
 class RegistrationController
 {
     public function top()
     {
-        $variables = [
-            "variable1" => "Hello",
-            "variable2" => "World",
-        ];
+        return $this->render('Top');
+    }
 
-        return $this->render('Top', $variables);
+    public function confirm()
+    {
+        $post_data = filter_input_array(INPUT_POST);
+        $validator = new RegistrationValidator();
+        $errors = $validator->registrationConfirm($post_data);
+
+        if ($errors) {
+            $variables = $errors;
+            $variables["prev_post_email"] = $post_data["mail"];
+            return $this->render('Top', $variables);
+        }
     }
 
     private function render(string $template, array $variables = [])
