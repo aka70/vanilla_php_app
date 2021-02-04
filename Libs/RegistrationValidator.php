@@ -16,18 +16,18 @@ class RegistrationValidator
         $validation = new Validator($post_data);
 
         $validation->labels([
-            'email' => 'メールアドレス',
+            'mail' => 'メールアドレス',
             'password' => 'パスワード',
             'password_conf' => 'パスワード(確認用)'
         ]);
 
-        $validation->rule('required', ['email', 'password', 'password_conf'])
+        $validation->rule('required', ['mail', 'password', 'password_conf'])
             ->message('{field}は必須項目です。');
 
-        $validation->rule('equals', ['password', 'password_conf'])
+        $validation->rule('equals', 'password', 'password_conf')
             ->message('パスワードとパスワード(確認用)が一致しません。');
 
-        $validation->rule('email', 'email')
+        $validation->rule('email', 'mail')
             ->message('正しいメールアドレス形式で入力してください。');
 
         $validation->rule('lengthMin', 'password', 6)
