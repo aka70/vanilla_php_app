@@ -9,6 +9,7 @@ class RegistrationController
 {
     public function top()
     {
+        session_start();
         return $this->render('Top');
     }
 
@@ -23,6 +24,11 @@ class RegistrationController
             $variables["prev_post_email"] = $post_data["mail"];
             return $this->render('Top', $variables);
         }
+
+        $_SESSION['mail'] = $post_data["mail"];
+        $_SESSION['password'] = $post_data["password"];
+
+        return $this->render('confirm', $post_data);
     }
 
     private function render(string $template, array $variables = [])
