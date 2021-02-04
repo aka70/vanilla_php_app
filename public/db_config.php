@@ -10,10 +10,10 @@ $database = new DB();
 
 $config = [
     'driver'    => 'mysql',
-    'host'      => getenv('BD_HOST'),
-    'database'  => getenv('DATABASE'),
-    'username'  => getenv('USERNAME'),
-    'password'  => getenv('PASSWORD'),
+    'host'      => $_ENV['DB_HOST'],
+    'database'  => $_ENV['DATABASE'],
+    'username'  => $_ENV['USERNAME'],
+    'password'  => $_ENV['PASSWORD'],
     'charset'   => 'utf8mb4',
     'collation' => 'utf8mb4_general_ci',
 ];
