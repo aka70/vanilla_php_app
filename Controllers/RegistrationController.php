@@ -4,12 +4,12 @@ namespace App\Controller;
 
 use eftec\bladeone\BladeOne;
 use App\Libs\RegistrationValidator;
+use App\Models\User;
 
 class RegistrationController
 {
     public function top()
     {
-        session_start();
         return $this->render('Top');
     }
 
@@ -29,6 +29,19 @@ class RegistrationController
         $_SESSION['password'] = $post_data["password"];
 
         return $this->render('confirm', $post_data);
+    }
+
+    public function complete()
+    {
+        $hashed_password = password_hash($_SESSION["mail"],PASSWORD_DEFAULT);
+        $user = new User();
+
+        $user->create([
+            'user_name' => $_SESSION["mail"],
+            'password' => "$hashed_password",
+        ]);
+
+        return $this->render('complete');
     }
 
     private function render(string $template, array $variables = [])

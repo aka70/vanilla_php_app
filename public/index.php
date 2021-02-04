@@ -7,6 +7,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     $r->addRoute('GET', '/', 'Top@index');
     $r->addRoute('GET', '/registration/top', 'Registration@top');
     $r->addRoute('POST', '/registration/confirm', 'Registration@confirm');
+    $r->addRoute('POST', '/registration/complete', 'Registration@complete');
     $r->addRoute('GET', '/users', 'get_all_users_handler');
     $r->addRoute('GET', '/user/{id:\d+}', 'get_user_handler');
     $r->addRoute('GET', '/articles/{id:\d+}[/{title}]', 'get_article_handler');
@@ -19,6 +20,8 @@ if (false !== $pos = strpos($uri, '?')) {
     $uri = substr($uri, 0, $pos);
 }
 $uri = rawurldecode($uri);
+
+session_start();
 
 $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 switch ($routeInfo[0]) {
